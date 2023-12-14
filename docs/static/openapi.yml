@@ -71781,6 +71781,12 @@ definitions:
         type: string
       priceDenom:
         type: string
+  xchange.dex.MsgSendBuyOrderResponse:
+    type: object
+  xchange.dex.MsgSendCreatePairResponse:
+    type: object
+  xchange.dex.MsgSendSellOrderResponse:
+    type: object
   xchange.dex.Params:
     type: object
     description: Params defines the parameters for the module.

@@ -1,7 +1,49 @@
 syntax = "proto3";
+
 package xchange.dex;
 
 option go_package = "xchange/x/dex/types";
 
 // Msg defines the Msg service.
-service Msg {}
+service Msg {
+  rpc SendCreatePair (MsgSendCreatePair) returns (MsgSendCreatePairResponse);
+  rpc SendSellOrder  (MsgSendSellOrder ) returns (MsgSendSellOrderResponse );
+  rpc SendBuyOrder   (MsgSendBuyOrder  ) returns (MsgSendBuyOrderResponse  );
+}
+message MsgSendCreatePair {
+  string sourceDenom      = 5;
+  string targetDenom      = 6;
+  string creator          = 1;
+  string port             = 2;
+  string channelID        = 3;
+  uint64 timeoutTimestamp = 4;
+}
+
+message MsgSendCreatePairResponse {}
+
+message MsgSendSellOrder {
+  string amountDenom      = 5;
+  int32  amount           = 6;
+  string priceDenom       = 7;
+  int32  price            = 8;
+  string creator          = 1;
+  string port             = 2;
+  string channelID        = 3;
+  uint64 timeoutTimestamp = 4;
+}
+
+message MsgSendSellOrderResponse {}
+
+message MsgSendBuyOrder {
+  string amountDenom      = 5;
+  int32  amount           = 6;
+  string priceDenom       = 7;
+  int32  price            = 8;
+  string creator          = 1;
+  string port             = 2;
+  string channelID        = 3;
+  uint64 timeoutTimestamp = 4;
+}
+
+message MsgSendBuyOrderResponse {}
+
