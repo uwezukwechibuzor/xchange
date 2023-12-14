@@ -3,10 +3,13 @@ package xchange.dex;
 
 option go_package = "xchange/x/dex/types";
 
+import "xchange/dex/order.proto";
+
 message SellOrderBook {
   string index = 1; 
   string amountDenom = 2; 
   string priceDenom = 3; 
+  OrderBook book = 4; 
   
 }
 
