@@ -1,5 +1,3 @@
-// x/dex/types/order_book.go
-
 package types
 
 import (
