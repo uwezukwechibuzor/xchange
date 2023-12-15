@@ -1,0 +1,66 @@
+syntax = "proto3";
+package xchange.isomessages;
+
+option go_package = "xchange/x/isomessages/types";
+
+message SecuritiesTradeConfirmation {
+  uint64 id = 14;
+  string trad_conf_id = 1;
+  string trad_conf_dt_tm = 2;
+  string rltd_ordr_id = 3;
+  string rltd_csh_mvmnt_id = 4;
+  string side = 5;
+  
+  message Qty {
+    int32 units = 1;
+  }
+  Qty qty = 6;
+
+  message FinInstrmId {
+    string isin = 1;
+  }
+  FinInstrmId fin_instrm_id = 7;
+
+  message Pric {
+    message Amt {
+      string ccy = 1;
+      string instd_amt = 2;
+    }
+    Amt amt = 1;
+  }
+  Pric pric = 8;
+
+  string trad_dt = 9;
+  string sttlm_dt = 10;
+
+  message TradVenue {
+    string id = 1;
+  }
+  TradVenue trad_venue = 11;
+
+  message TradgPty {
+    message PtyId {
+      message OrgId {
+        string bic = 1;
+      }
+      OrgId org_id = 1;
+    }
+    PtyId pty_id = 1;
+
+    message RltdPty {
+      message PtyId {
+        message OrgId {
+          string bic = 1;
+        }
+        OrgId org_id = 1;
+      }
+      PtyId pty_id = 1;
+    }
+    RltdPty rltd_pty = 2;
+  }
+  TradgPty tradg_pty = 12;
+}
+
+message Document {
+  SecuritiesTradeConfirmation securities_trade_confirmation = 1;
+}

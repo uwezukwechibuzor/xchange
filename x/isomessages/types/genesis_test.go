@@ -19,12 +19,47 @@ func TestGenesisState_Validate(t *testing.T) {
 			valid:    true,
 		},
 		{
-			desc:     "valid genesis state",
+			desc: "valid genesis state",
 			genState: &types.GenesisState{
 
+				SecuritiesTradeConfirmationList: []types.SecuritiesTradeConfirmation{
+					{
+						Id: 0,
+					},
+					{
+						Id: 1,
+					},
+				},
+				SecuritiesTradeConfirmationCount: 2,
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
+		},
+		{
+			desc: "duplicated securitiesTradeConfirmation",
+			genState: &types.GenesisState{
+				SecuritiesTradeConfirmationList: []types.SecuritiesTradeConfirmation{
+					{
+						Id: 0,
+					},
+					{
+						Id: 0,
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "invalid securitiesTradeConfirmation count",
+			genState: &types.GenesisState{
+				SecuritiesTradeConfirmationList: []types.SecuritiesTradeConfirmation{
+					{
+						Id: 1,
+					},
+				},
+				SecuritiesTradeConfirmationCount: 0,
+			},
+			valid: false,
 		},
 		// this line is used by starport scaffolding # types/genesis/testcase
 	} {

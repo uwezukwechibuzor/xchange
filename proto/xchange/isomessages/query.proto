@@ -1,26 +1,58 @@
 syntax = "proto3";
+
 package xchange.isomessages;
 
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "xchange/isomessages/params.proto";
+import "xchange/isomessages/securities_trade_confirmation.proto";
 
 option go_package = "xchange/x/isomessages/types";
 
 // Query defines the gRPC querier service.
 service Query {
+  
   // Parameters queries the parameters of the module.
-  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/xchange/isomessages/params";
+  
+  }
+  
+  // Queries a list of SecuritiesTradeConfirmation items.
+  rpc SecuritiesTradeConfirmation    (QueryGetSecuritiesTradeConfirmationRequest) returns (QueryGetSecuritiesTradeConfirmationResponse) {
+    option (google.api.http).get = "/xchange/isomessages/securities_trade_confirmation/{id}";
+  
+  }
+  rpc SecuritiesTradeConfirmationAll (QueryAllSecuritiesTradeConfirmationRequest) returns (QueryAllSecuritiesTradeConfirmationResponse) {
+    option (google.api.http).get = "/xchange/isomessages/securities_trade_confirmation";
+  
   }
 }
-
 // QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
 
 // QueryParamsResponse is response type for the Query/Params RPC method.
 message QueryParamsResponse {
+  
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
 }
+
+message QueryGetSecuritiesTradeConfirmationRequest {
+  uint64 id = 1;
+}
+
+message QueryGetSecuritiesTradeConfirmationResponse {
+  SecuritiesTradeConfirmation SecuritiesTradeConfirmation = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllSecuritiesTradeConfirmationRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllSecuritiesTradeConfirmationResponse {
+  repeated SecuritiesTradeConfirmation            SecuritiesTradeConfirmation = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination                  = 2;
+}
+
