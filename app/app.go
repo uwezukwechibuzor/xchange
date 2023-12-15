@@ -106,6 +106,9 @@ import (
 	dexmodule "xchange/x/dex"
 	dexmodulekeeper "xchange/x/dex/keeper"
 	dexmoduletypes "xchange/x/dex/types"
+	isomessagesmodule "xchange/x/isomessages"
+	isomessagesmodulekeeper "xchange/x/isomessages/keeper"
+	isomessagesmoduletypes "xchange/x/isomessages/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	appparams "xchange/app/params"
@@ -165,6 +168,7 @@ var (
 		ica.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		dexmodule.AppModuleBasic{},
+		isomessagesmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -241,6 +245,8 @@ type App struct {
 
 	ScopedDexKeeper capabilitykeeper.ScopedKeeper
 	DexKeeper       dexmodulekeeper.Keeper
+
+	IsomessagesKeeper isomessagesmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -286,6 +292,7 @@ func New(
 		ibctransfertypes.StoreKey, icahosttypes.StoreKey, capabilitytypes.StoreKey, group.StoreKey,
 		icacontrollertypes.StoreKey,
 		dexmoduletypes.StoreKey,
+		isomessagesmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -512,6 +519,15 @@ func New(
 	dexModule := dexmodule.NewAppModule(appCodec, app.DexKeeper, app.AccountKeeper, app.BankKeeper)
 
 	dexIBCModule := dexmodule.NewIBCModule(app.DexKeeper)
+
+	app.IsomessagesKeeper = *isomessagesmodulekeeper.NewKeeper(
+		appCodec,
+		keys[isomessagesmoduletypes.StoreKey],
+		keys[isomessagesmoduletypes.MemStoreKey],
+		app.GetSubspace(isomessagesmoduletypes.ModuleName),
+	)
+	isomessagesModule := isomessagesmodule.NewAppModule(appCodec, app.IsomessagesKeeper, app.AccountKeeper, app.BankKeeper)
+
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	/**** IBC Routing ****/
@@ -579,6 +595,7 @@ func New(
 		transferModule,
 		icaModule,
 		dexModule,
+		isomessagesModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -609,6 +626,7 @@ func New(
 		paramstypes.ModuleName,
 		vestingtypes.ModuleName,
 		dexmoduletypes.ModuleName,
+		isomessagesmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -634,6 +652,7 @@ func New(
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
 		dexmoduletypes.ModuleName,
+		isomessagesmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -664,6 +683,7 @@ func New(
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
 		dexmoduletypes.ModuleName,
+		isomessagesmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -694,6 +714,7 @@ func New(
 		ibc.NewAppModule(app.IBCKeeper),
 		transferModule,
 		dexModule,
+		isomessagesModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
@@ -899,6 +920,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(icacontrollertypes.SubModuleName)
 	paramsKeeper.Subspace(icahosttypes.SubModuleName)
 	paramsKeeper.Subspace(dexmoduletypes.ModuleName)
+	paramsKeeper.Subspace(isomessagesmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

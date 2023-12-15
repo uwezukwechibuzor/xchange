@@ -105,17 +105,15 @@ func (k Keeper) MintTokens(ctx sdk.Context, receiver sdk.AccAddress, tokens sdk.
 }
 
 func (k Keeper) UnlockTokens(ctx sdk.Context, sourcePort string, sourceChannel string, receiver sdk.AccAddress, tokens sdk.Coin) error {
-    // create the escrow address for the tokens
-    escrowAddress := ibctransfertypes.GetEscrowAddress(sourcePort, sourceChannel)
+	// create the escrow address for the tokens
+	escrowAddress := ibctransfertypes.GetEscrowAddress(sourcePort, sourceChannel)
 
-    // escrow source tokens. It fails if balance insufficient
-    if err := k.bankKeeper.SendCoins(
-        ctx, escrowAddress, receiver, sdk.NewCoins(tokens),
-    ); err != nil {
-        return err
-    }
+	// escrow source tokens. It fails if balance insufficient
+	if err := k.bankKeeper.SendCoins(
+		ctx, escrowAddress, receiver, sdk.NewCoins(tokens),
+	); err != nil {
+		return err
+	}
 
-    return nil
+	return nil
 }
-
-

@@ -1,0 +1,12 @@
+syntax = "proto3";
+package xchange.isomessages;
+
+import "gogoproto/gogo.proto";
+import "xchange/isomessages/params.proto";
+
+option go_package = "xchange/x/isomessages/types";
+
+// GenesisState defines the isomessages module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+}

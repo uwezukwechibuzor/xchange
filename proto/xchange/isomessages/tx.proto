@@ -1,0 +1,7 @@
+syntax = "proto3";
+package xchange.isomessages;
+
+option go_package = "xchange/x/isomessages/types";
+
+// Msg defines the Msg service.
+service Msg {}
